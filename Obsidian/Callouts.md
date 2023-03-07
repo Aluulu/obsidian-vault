@@ -1,0 +1,1 @@
+https://nicolevanderhoeven.com/blog/20220330-new-in-obsidian-obsidian-callouts/
