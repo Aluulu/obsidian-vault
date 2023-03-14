@@ -66,6 +66,12 @@ pacman -Ss <package_name>
 paccache -r
 ```
 
+### Remove unused dependencies
+
+```Shell
+pacman -Rsn $(pacman -Qdtq)
+```
+
 ### Repeat last command as [[Sudo]]
 
 ```Shell
