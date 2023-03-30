@@ -1,10 +1,15 @@
 
 
-## Find app location
+# Find app location
 ```Shell
 flatpak info --show-location ref.to.app
 ```
 
+# Remove unused runtimes/dependencies
+
+```Shell
+flatpak uninstall --unused
+```
 
 # Common issues:
 
