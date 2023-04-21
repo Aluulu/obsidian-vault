@@ -14,3 +14,11 @@ A package manager is a software typically found in Linux ([[Linux]])  that handl
 > If your operating system offers a packagized version of the soware, it’s usually preferable to install the package instead of running a web installer. Packages are easy to track, upgrade, and remove.
 
 \- UNIX and Linux System Administration Handbook - Fifth Edition (**1.10** Ways to find and install software)
+
+# Other software installers
+
+There are other ways to install software other than your system's package manager. Some of these include:
+
+- [[Flatpak]]
+- Building from source
+- Building from the [[AUR]]
