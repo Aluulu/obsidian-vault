@@ -8,18 +8,31 @@
         "type": "tabs",
         "children": [
           {
-            "id": "05e5ab129868cf00",
+            "id": "a9b1a21c9c2ebce3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux/Flatpak.md",
+                "file": "Linux/Systemd.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "89723f6a4504e2b4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Linux/Booting.md",
                 "mode": "preview",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Linux/Flatpak.md",
+                "file": "Linux/Booting.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Linux/Flatpak.md",
+                "file": "Linux/Booting.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,16 +138,16 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux/Flatpak.md"
+                "file": "Linux/Booting.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -143,31 +156,46 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "05e5ab129868cf00",
+  "active": "89723f6a4504e2b4",
   "lastOpenFiles": [
+    "Linux/Src/Linux boot process.png",
+    "Linux/Systemd.md",
+    "Linux/Distros/Arch.md",
+    "Linux/Flatpak.md",
+    "Linux/Booting.md",
+    "Linux/Shell.md",
+    "Linux/Package Management.md",
+    "Obsidian/Cheat Sheet.md",
+    "Linux/Linux.md",
+    "Linux/AUR.md",
+    "Linux/Distros/Ubuntu.md",
+    "Linux/Distros/Fedora.md",
+    "Linux/Distros/Debian.md",
+    "Linux/Desktop Environments/KDE.md",
+    "Linux/Commands/Grep.md",
+    "Pasted image 20230405231133.png",
+    "README.md",
+    "Programming Languages/Rust/Data Types.md",
+    "Programming Languages/Rust/Crates.md",
+    "Programming Languages/Rust/Cargo.md",
+    "Linux/Commands/Which.md",
+    "Linux/Commands/Whereis.md",
+    "Obsidian/Callouts.md",
+    "Sudo.md",
+    "Linux/Src/Pasted image 20230405192839.png",
+    "Linux/Src",
+    "Pasted image 20230405192839.png",
     "Programming Languages/Python/Functions.md",
     "Programming Languages/Python/Python.md",
-    "Linux/Distros/Arch.md",
-    "Linux/AUR.md",
-    "Linux/Flatpak.md",
     "Src/Linux/Flatpak/VisualStudioFlatsealExample.png",
     "Src/Linux/Flatpak",
     "Src/Linux",
     "Src",
     "Programming Languages/Rust/Macros/dbg!.md",
-    "Programming Languages/Rust/Macros/debug!.md",
-    "Programming Languages/Rust/Macros/is_ok().md",
-    "Programming Languages/Rust/Variables.md",
-    "Programming Languages/Rust/String vs String slice.md",
-    "Programming Languages/Rust/Macros",
-    "Programming Languages/Rust/Data Types.md",
-    "Programming Languages/Rust/Crates.md",
-    "Programming Languages/Rust/Cargo.md",
-    "Programming Languages/Rust/Rust.md",
-    "Programming Languages/Programming Languages.md",
-    "README.md"
+    "Programming Languages/Rust/Macros"
   ]
 }
