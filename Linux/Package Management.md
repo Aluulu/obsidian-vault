@@ -5,3 +5,12 @@ A package manager is a software typically found in Linux ([[Linux]])  that handl
 > GITHUB LINK HERE
 > Or find here in this directory: `Obsidian Vault/Programming Languages/Rust/src/mainpackage-manager-syntax-builder`
 
+## Why Packages over other installs
+
+- Easy to track changes
+- Easy to upgrade
+- Easy to remove
+
+> If your operating system offers a packagized version of the soware, it’s usually preferable to install the package instead of running a web installer. Packages are easy to track, upgrade, and remove.
+
+\- UNIX and Linux System Administration Handbook - Fifth Edition (**1.10** Ways to find and install software)
