@@ -33,9 +33,14 @@ cat /proc/cmdline
 
 ## Edit Kernal options
 
-To edit the appropriate file in either `/etc/grub.d/40_custom` or `/etc/defaults/grub`. If editing the later, the variable `GRUB_CMDLINE_LINUX` should be edited. For example:
+Edit the appropriate file in either `/etc/grub.d/40_custom` or `/etc/defaults/grub`. If editing the later, the variable `GRUB_CMDLINE_LINUX` should be edited. For example:
 
 `GRUB_CMDLINE_LINUX="nvidia_drm.modeset=1"`
+
+You can edit kernal arguments by bringing up the CLI on boot. Using GRUB2, press the `E` key when the GRUB2 boot menu appears. Depending on your system you may get different results to pick from, these are:
+
+- linux - 64-Bit IBM Power Series
+- linuxefi - UEFI systems
 
 # System management daemon
 
