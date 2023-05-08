@@ -140,23 +140,23 @@ To find a transpose of a matrix, you must simply swap the rows and the colomns s
 
 ```Math
 A = [1 3 4]
-	[2 3 2]
+    [2 3 2]
 
 Finding the transpose is simply swapping the rows and colomns
-	 [1 2]
+     [1 2]
 At = [3 3]
-	 [4 2]
+     [4 2]
 ```
 
 ```Math
     [1 5 -1]
 B = [3 0  4]
-	[1 1 -2]
+    [1 1 -2]
 
 Swap the rows and colomns
-	 [1  3  1]
+     [1  3  1]
 Bt = [5  0  1]
-	 [-1 4 -2]
+     [-1 4 -2]
 
 The first row of [1 3 1] now became the first colomn.
 The second row of [3 0 4] now became the second colomn
@@ -176,16 +176,16 @@ The product of A and B will be `m` times `p`
 
 ```Math
 
-	[1 5 −1]          [1 -1 3]
+    [1 5 −1]          [1 -1 3]
 A = [3 0 4]       B = [1 -2 1]
-	[1 1 −2]          [2 3 -2]
+    [1 1 −2]          [2 3 -2]
 
 Calculate the first Row of A with the first Colomn of B
 AB[1,1] = A(R1C1) times B(R1C1) = 1 times 1
 AB[1,1] = A(R1C2) times B(R2C1) = 5 times 1
 AB[1,1] = A(R1C3) times B(R3C1) = -1 times 2
 = (1 x 1) + (5 x 1) + (-1 x 2)
-	 ^         ^          ^
+     ^         ^          ^
      |         |          |
      1    +    5    +    -2   = 4
 So AB[1,1] = 4
@@ -196,8 +196,8 @@ AB[1,2] = A(R1C2) times B(R2C2) = 5 times -2
 AB[1,2] = A(R1C3) times B(R3C2) = -1 times 3
 = (1 x -1) + (5 x -2) + (-1 x 3)
      ^         ^           ^
-	 |         |           |
-	 -1    +  -10     +    -3  = -14
+     |         |           |
+     -1    +  -10     +    -3  = -14
 So AB[1.2] = -14
 
 This continues until every point in the matrices are done.
