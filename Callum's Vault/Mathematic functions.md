@@ -1,12 +1,12 @@
 # Finding a function
 
-You can find the function by simply replacing `x` with the given expression and then working out the new function.
+You can find the function by simply replacing `x` with the given value of `x` and then working out/simplifying the new function using BODMAS.
 
 ## Example
 
 ```Math
 f(x) = 2x^3 + 4
-Let f(7)
+Let f(x) = f(7)
 
 Replace x with the new expression
 f(7) = 2(7)^3 + 4
@@ -21,7 +21,7 @@ Since no more calculations or simplifcations can be done. That's it.
 
 ```Math
 f(x) = 2x^3 + 4
-let f(-0.5)
+let f(x) = (-0.5)
 
 Replace x with the new expression
 f(-0.5) = 2(-0.5)^3 + 4
@@ -34,9 +34,9 @@ f(-0.5) = 3.75    // -0.25 add 4
 Since no more calculations or simplifcations can be done. That's it.
 ```
 
-# Finding funtion of function
+# Finding funtion of function (g of f)
 
-To find a function of another function, you have to replace `x` by the other function of the order. For example `g` of `f`; in this situation `f` goes where the `x` would be in the function of `g`.
+To find a function of another function, you have to replace `x` with the other function of the expression. For example `g` of `f`; in this situation `f` goes where the `x` would be in the function of `g`.
 
 ## Examples
 
@@ -60,7 +60,7 @@ Since nothing else can be done, that's it.
 
 # Corresponding expression
 
-This is simplifying the expression down. To do this we replace `x` with the expression given and then work out the new expression.
+This is working out and simplifying the expression down. To do this we replace `x` with the expression given and then work out the new expression.
 
 ## Example
 
@@ -92,11 +92,11 @@ Simply it
 
 To do an inverse, you have to make x the sole remaining part of the right-side of the equation.
 
-You do this by replacing the function with `Y`.
+You do this by replacing the function `f(x)` with `Y`.
 
-Then you remove numbers from the side with `X`. By doing this you must also do the same to the other side.
+Then you remove numbers from the side with `X`. By doing this you must also do the opposite to the other side.
 
-Then you put the equation of `f-1` in by replacing `Y` with `X`
+Then you put the equation of `f^-1` in by replacing `Y` with `X`
 
 ## Examples
 
@@ -111,7 +111,7 @@ Y-7 = 5x    // Minus 7 from both sides
 (Y-7)/5 = x    // Divide by 5
 
 Now that x is alone we use f-1
-f-1(x) = (x-7)/5
+f^-1(x) = (x-7)/5
 ```
 
 ```Math
@@ -124,7 +124,7 @@ Using BODMAS, remove numbers from the right side to the left side
 Y/3 = x    // Divide by 3
 
 Now that x is alone we use f-1
-f-1(x) = x/3
+f^-1(x) = x/3
 ```
 
 # Matrices
