@@ -127,11 +127,16 @@ Now that x is alone we use f-1
 f-1(x) = x/3
 ```
 
-# Transpose of a matrix
+# Matrices
+
+>[!Important]
+>The following tables may not work on another markdown reader such as GitHub's own markdown viewer. View it in Obsidian for the best viewing experience
+
+## Transpose of a matrix
 
 To find a transpose of a matrix, you must simply swap the rows and the colomns so that the rows become colomns and the colomns become rows.
 
-## Example
+### Example
 
 ```Math
 A = [1 3 4]
@@ -156,4 +161,53 @@ Bt = [5  0  1]
 The first row of [1 3 1] now became the first colomn.
 The second row of [3 0 4] now became the second colomn
 The third row of [-1 4 -2] now became the third colomn
+```
+
+## Product of Matrices A and B (AB)
+
+To find the product of two matrices (or AB), you will need to do matrix multiplcation.
+
+The two matrices will have two sides. 
+- Matrix A in this case will have `m` and `n`.
+- Matrix B will have `n` and `p`
+The product of A and B will be `m` times `p`
+
+### Example
+
+```Math
+
+	[1 5 −1]          [1 -1 3]
+A = [3 0 4]       B = [1 -2 1]
+	[1 1 −2]          [2 3 -2]
+
+Calculate the first Row of A with the first Colomn of B
+AB[1,1] = A(R1C1) times B(R1C1) = 1 times 1
+AB[1,1] = A(R1C2) times B(R2C1) = 5 times 1
+AB[1,1] = A(R1C3) times B(R3C1) = -1 times 2
+= (1 x 1) + (5 x 1) + (-1 x 2)
+	 ^         ^          ^
+     |         |          |
+     1    +    5    +    -2   = 4
+So AB[1,1] = 4
+
+Calculate the first Row of A with the second Colomn of B
+AB[1,2] = A(R1C1) times B(R1C2) = 1 times -1
+AB[1,2] = A(R1C2) times B(R2C2) = 5 times -2
+AB[1,2] = A(R1C3) times B(R3C2) = -1 times 3
+= (1 x -1) + (5 x -2) + (-1 x 3)
+     ^         ^           ^
+	 |         |           |
+	 -1    +  -10     +    -3  = -14
+So AB[1.2] = -14
+
+This continues until every point in the matrices are done.
+AB[1,1] is A first row times B first colomn
+AB[1,2] is A first row times B second colomn
+AB[1,3] is A first row times B third colomn
+AB[2,1] is A second row times B first colomn
+AB[2.2] is A second row times B second colomn
+AB[2,3] is A second row times B third colomn
+AB[3,1] is A third row times B first colomn
+AB[3,2] is A third row times B second colomn
+AB[3,3] is A third row times B third colomn
 ```
