@@ -126,3 +126,34 @@ Y/3 = x    // Divide by 3
 Now that x is alone we use f-1
 f-1(x) = x/3
 ```
+
+# Transpose of a matrix
+
+To find a transpose of a matrix, you must simply swap the rows and the colomns so that the rows become colomns and the colomns become rows.
+
+## Example
+
+```Math
+A = [1 3 4]
+	[2 3 2]
+
+Finding the transpose is simply swapping the rows and colomns
+	 [1 2]
+At = [3 3]
+	 [4 2]
+```
+
+```Math
+    [1 5 -1]
+B = [3 0  4]
+	[1 1 -2]
+
+Swap the rows and colomns
+	 [1  3  1]
+Bt = [5  0  1]
+	 [-1 4 -2]
+
+The first row of [1 3 1] now became the first colomn.
+The second row of [3 0 4] now became the second colomn
+The third row of [-1 4 -2] now became the third colomn
+```
