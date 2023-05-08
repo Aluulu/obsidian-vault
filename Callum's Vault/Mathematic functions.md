@@ -1,8 +1,10 @@
-# Finding a function
+# Functions
+
+## Finding a function
 
 You can find the function by simply replacing `x` with the given value of `x` and then working out/simplifying the new function using BODMAS.
 
-## Example
+### Example
 
 ```Math
 f(x) = 2x^3 + 4
@@ -34,11 +36,11 @@ f(-0.5) = 3.75    // -0.25 add 4
 Since no more calculations or simplifcations can be done. That's it.
 ```
 
-# Finding funtion of function (g of f)
+## Finding funtion of function (g of f)
 
 To find a function of another function, you have to replace `x` with the other function of the expression. For example `g` of `f`; in this situation `f` goes where the `x` would be in the function of `g`.
 
-## Examples
+### Examples
 
 ```Math
 f(x) = 4x + 2
@@ -58,11 +60,11 @@ Simply the equation by adding together items
 Since nothing else can be done, that's it.
 ```
 
-# Corresponding expression
+## Corresponding expression
 
 This is working out and simplifying the expression down. To do this we replace `x` with the expression given and then work out the new expression.
 
-## Example
+### Example
 
 ```Math
 f(4x + 2) − f(x) when f(x) = x^2
@@ -88,7 +90,7 @@ Simply it
 15x^2 + 16x + 4
 ```
 
-# Inverse
+## Inverse
 
 To do an inverse, you have to make x the sole remaining part of the right-side of the equation.
 
@@ -98,7 +100,7 @@ Then you remove numbers from the side with `X`. By doing this you must also do t
 
 Then you put the equation of `f^-1` in by replacing `Y` with `X`
 
-## Examples
+### Examples
 
 ```Math
 f(x) = 7 + 5x
@@ -210,4 +212,19 @@ AB[2,3] is A second row times B third colomn
 AB[3,1] is A third row times B first colomn
 AB[3,2] is A third row times B second colomn
 AB[3,3] is A third row times B third colomn
+
+AB[1,1] = (1 x 1) + (5 x 1) + (-1 x 2) = 4  
+AB[1,2] = (1 x -1) + (5 x -2) + (-1 x 3) = -14  
+AB[1,3] = (1 x 3) + (5 x 1) + (-1 x -2) = 10  
+AB[2,1] = (3 x 1) + (0 x 1) + (4 x 2) = 11  
+AB[2,2] = (3 x -1) + (0 x -2) + (4 x 3) = 9  
+AB[2,3] = (3 x 3) + (0 x 1) + (4 x -2) = 1  
+AB[3,1] = (1 x 1) + (1 x 1) + (-2 x 2) = -2  
+AB[3,2] = (1 x -1) + (1 x -2) + (-2 x 3) = -9  
+AB[3,3] = (1 x 3) + (1 x 1) + (-2 x -2) = 8
+
+Putting this into a new matrix gives us
+     [4 -14 10]
+AB = [11 9 1]
+     [-2 -9 8]
 ```
