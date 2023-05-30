@@ -236,3 +236,21 @@ There are 5 different types of Docker networks, these are:
 - **ipvlan**: IPvlan networks give users total control over both IPv4 and IPv6 addressing. The VLAN driver builds on top of that in giving operators complete control of layer 2 VLAN tagging and even IPvlan L3 routing for users interested in underlay network integration. See [Use IPvlan networks](https://docs.docker.com/network/ipvlan/) on the official Docker docs.
 - **macvlan**: Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network. The Docker daemon routes traffic to containers by their MAC addresses. Using the `macvlan` driver is sometimes the best choice when dealing with legacy applications that expect to be directly connected to the physical network, rather than routed through the Docker host’s network stack. See [Use macvlan networks](https://docs.docker.com/network/macvlan/) on the official Docker docs.
 - **none**: For this container, disable all networking. Usually used in conjunction with a custom network driver. `none` is not available for swarm services. See [Disable networking for a container](https://docs.docker.com/network/none/) on the official Docker docs.
+
+## How to select a network
+
+To select a network, simply edit the Docker compose file to include the relevant network mode. 
+
+```yml
+network_mode: '[network_type]'
+```
+
+### Example
+
+```yml
+services:  
+	jellyfin:  
+		image: jellyfin/jellyfin  
+		container_name: jellyfin  
+		network_mode: 'host'
+```
