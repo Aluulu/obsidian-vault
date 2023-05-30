@@ -7,7 +7,7 @@ Please refer to the Docker installation section to see how to install Docker: [[
 
 ## 2. Docker compose file
 
-Create a file called `docker-compose.yml` and paste the following into it:
+Create a file called `docker-compose.yml` and paste the following into it, editing as required:
 
 ```yml
 version: "3"
