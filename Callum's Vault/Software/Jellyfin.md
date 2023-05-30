@@ -16,7 +16,7 @@ mkdir /path/to/jellyfin-media
 
 ## 3. Docker compose file
 
-Create a file called `docker-compose.yml` and paste the following into it:
+Create a file called `docker-compose.yml` and paste the following into it, editing as required:
 
 ```yml
 version: '3.5'
