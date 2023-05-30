@@ -4,7 +4,7 @@ Docker is an open-source deployment application that utilises containers to easi
 
 - **Consistent and reproducible environments** - Docker containers are consistent. The container provides a consistent and isolated environment that can be reproduced across different machines, ensuring that your application behaves the same way everywhere.
 - **Portability** - Since Docker containers are exactly the same, they can be used on any machine regardless of it's settings.
-- **Efficient** - Multiple containers can be ran on the same machine, sharing the host's resources. Unlike Virtual Machines, containers can be ran on the bare metal operating system, eliminating potential overhead.
+- **Efficient** - Multiple containers can be ran on the same machine, sharing the host's system kernel, so they do not require a kernel for each container. Unlike Virtual Machines, containers can be ran on the bare metal operating system, eliminating potential overhead.
 - **Isolation and security**: Each Docker container runs in its own isolated environment, with its own file system, processes, and network interfaces. This isolation provides an added layer of security by limiting the impact of potential vulnerabilities. Containers also enable you to separate different components of your application, reducing the risk of conflicts.
 - **Scalability and flexibility**: Docker makes it easy to scale your application horizontally by spinning up multiple instances of containers. You can quickly add or remove containers based on demand
 
