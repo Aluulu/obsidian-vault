@@ -16,12 +16,12 @@ Placeholder code (arguments that should not be taken literally) are in square br
 cp [file] [directory]
 ```
 
-## Repeated commands
+## Repeated commands or arguments
 
 Commands with an ellipsis `(...)` can be repeated, for example:
 
 ```Shell
-pacman -S [package_name] [...]
+pacman -S (package_name) (package_name_2) (...)
 ```
 
 Pacman can install multiple packages at once when specified, this can be done by typing the name of the package after selecting the install flag.
