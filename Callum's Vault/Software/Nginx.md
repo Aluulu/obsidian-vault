@@ -1,7 +1,55 @@
 
 # How to install
 
-## Ubuntu 
+## Ubuntu
+
+### 1. Installing Nginx
+
+```Shell
+sudo apt install nginx
+```
+
+### 2. Adjust your firewall
+
+If you are using a firewall, you need to allow Nginx to run through the firewall using the following command:
+
+```Shell
+sudo ufw app list
+```
+
+Find the Nginx that you wish to use from the list:
+- Nginx Full
+- Nginx HTTP
+- Nginx HTTPS
+
+Paste the following command choosing whichever one you are going to use:
+
+```Shell
+sudo ufw allow 'Nginx Full'
+```
+
+You can check if it was successful using the following command:
+
+```Shell
+sudo ufw status
+```
+
+### 3. Check that Nginx is running
+
+You can check if Nginx is running using the following command:
+
+```Shell
+systemctl status nginx
+```
+
+### 4. Browse to your IP
+
+If all has gone well, browsing to your IP should bring up the default NGINX webpage:
+
+```Browser
+http://your_server_ip
+```
+## Docker 
 
 ### 1. Install Docker
 
