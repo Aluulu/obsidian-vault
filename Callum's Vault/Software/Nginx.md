@@ -236,13 +236,53 @@ Enable the site and make it live by creating a symbolic link in `/etc/nginx/site
 sudo ln -s /etc/nginx/sites-available/sub.domain_name.net /etc/nginx/sites-enabled/
 ```
 
-## Restart the Nginx service
+## Create a config file
 
-Restart the service by entering the following command. This should be ran anytime ***Nginx*** change has been made:
+Now create a `conf` file so that you can tell Nginx what to do with the request. Use the subdomain name as the name of the file to make it easier to track.
 
 ```Shell
-sudo systemctl restart nginx
+sudo nano /etc/nginx.conf.d/subdomain.conf
 ```
+
+Inside that file, paste the following:
+
+```conf
+server {
+        listen 80;
+        listen [::]:80;
+
+		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk
+
+        root /var/www/your_domain/html;
+        index index.html index.htm index.nginx-debian.html;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+```
+
+### Passing the request to the correct server
+
+Now that you have enabled the site, you can tell Nginx where to forward the requests it gets for your certain subdomain. Inside the same file, paste the following inside the `server` block:
+
+```conf
+location / {
+        # Proxy main Minecraft traffic
+        proxy_pass http://IP.GOES.HERE:PORT;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+
+        # Disable buffering when the nginx proxy gets very resource heavy upon streaming
+        proxy_buffering off;
+    }
+```
+
+Be sure to change the IP address and port number.
 
 ## Check syntax errors
 
@@ -250,6 +290,14 @@ After restarting the service and Nginx has successfully applied the changes, che
 
 ```Shell
 sudo nginx -t
+```
+
+## Restart the Nginx service
+
+Restart the service by entering the following command. This should be ran anytime ***Nginx*** change has been made:
+
+```Shell
+sudo systemctl restart nginx
 ```
 
 # Setting up HTTPS with LetsEncrypt/Certbot

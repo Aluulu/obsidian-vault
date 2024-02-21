@@ -102,6 +102,15 @@ Each permission specification line includes information about
 - The users as whom the commands can be executed
 
 It is possible to define aliases for sets of users and for sets of users as whom commands may be run.
+## Other system accounts
+
+Root is not the only system account with elevated privileges, other system accounts exist that are able to modify important system files or important applications. These accounts are typically created by applications that elevated permissions; for example [[Nginx]] creates an account called `www-data` that has the ability to access files within `/var`, in which most users do not have.
+
+Typically, but not always, accounts with UIDs within the following numbers are categorised by their purpose:
+- 0-10 - Used by System accounts
+- 11-100 - Used by programs that require elevated permissions
+
+It is good practise to replace the encrypted password of these users in `/etc/shadow` and `/etc/passwd` with a star * so that the account cannot be logged into. It is also good practise to set these account's shells to `/bin/false` or `/bin/nologin` to protect against remote login exploits that use alternative login methods such as SSH key files.
 # Elevating permissions for files (setuid and setgid)
 
 The kernel and the filesystem work together to allow specific files to run with elevated permissions, typically ran as root. This can be handy for letting developers or administrators for setting up ways for unprivileged users to perform privileged operations. When a program with "setuid" or "setgid" permission is run by the kernel, the process's permissions are temporarily elevated to match those of the program's owner, rather than the user who started the program.
