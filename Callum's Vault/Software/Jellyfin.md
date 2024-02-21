@@ -1,10 +1,6 @@
 # Installation
 
-^b4e9ef
-
 ## 1. Install Docker
-
-^b57383
 
 Please refer to the Docker installation section to see how to install Docker: [[Docker#Installation]]
 
