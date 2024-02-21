@@ -102,6 +102,26 @@ Each permission specification line includes information about
 - The users as whom the commands can be executed
 
 It is possible to define aliases for sets of users and for sets of users as whom commands may be run.
+
+## Disable the root account
+
+With `sudo`, you'll find you may never need the root account, as sudo is a perfect substitute for the root account, without all the potential and real drawbacks that using root brings. If you wish to disable root, you can use the following command:
+
+```Shell
+sudo usernmod -L root
+```
+
+Even with the root user locked, sudo still works as intended, and all software that relies on root continue to function even with the account locked. The command above works by prepending the root password with an `!`, which prevents the password from being a valid password hash, which prevents login.
+
+## Enable root
+
+If you wish to unlock root for any reason, you can use the following command:
+
+```Shell
+sudo passwd root
+# Now enter the password you wish to use for root
+```
+
 ## Other system accounts
 
 Root is not the only system account with elevated privileges, other system accounts exist that are able to modify important system files or important applications. These accounts are typically created by applications that elevated permissions; for example [[Nginx]] creates an account called `www-data` that has the ability to access files within `/var`, in which most users do not have.
