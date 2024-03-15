@@ -1,4 +1,7 @@
 
+> [!Info] Info
+> Don't know what server to start? Check out the types of servers you can run and what their benefits and negatives are here: [[#Differences in Servers]]
+
 # Setting up Vanilla server (No mods)
 
 ## Set up
@@ -506,3 +509,48 @@ You can do this by going to your terminal and typing into the following commands
 Go to that IP address in any browser and it will bring up the admin page for your router. Log into it and find the section dedicated to `port forwarding`.
 
 Your server's configuration file will have a setting called `server-port`. Open that port on your router and save.
+
+# Differences in Servers
+
+There are many different variations of Minecraft server software that can be ran, each with their own benefits and negatives. You can decide which one to pick when you are first setting up your server.
+
+## Vanilla
+
+The Vanilla software is the original, untouched, unmodified Minecraft server software created and distributed directly by Mojang. This will work with just about any version of Minecraft. However, because it also comes with a plethora of bugs and a lack of configuration options.
+
+Vanilla can be found here: https://minecraft.net/en-us/download/server
+## Bukkit
+
+Bukket is a modified version of the Vanilla server that enables a plugin API, meaning that certain modifications can be made to the game with simple drag and drop plugins. Bukkit also includes a small amount of bug fixes not seen in the Vanilla server.
+
+You can build the latest version of Bukkit here: https://www.spigotmc.org/threads/buildtools-updates-information.42865/
+
+## Spigot
+
+Spigot is a modified version of CraftBukkit with a large number of improvements and optimizations, making it a better experience overall. However just like with Bukkit, you cannot download it, only build it.
+
+You can build the latest version here: https://www.spigotmc.org/wiki/buildtools/
+
+## Forge
+
+Forge is a well down alternative to Minecraft that allow you to download mods that make direct modifications to Minecaft, allowing for a completely different experience. The difference between Forge and other servers like Bukkit, is that Forge Mods are direct modifications to the Minecraft program code while Bukkit Plugins are modifications that use the already-coded Minecraft properties to perform certain functions. So Forge can add completely new features, while Bukkit can only modify or tweak Minecraft features.
+
+You can download Forge here: https://files.minecraftforge.net/net/minecraftforge/forge/
+
+## Fabric
+
+Fabric is also an mod loader like Forge is with some improvements. It's lightweight and faster than Forge, giving it a direct advantage, however it does not come with the history of mods that Forge has. If you are looking between the two, it may be worth deciding what mods you want, and if there are versions for both Forge and Fabric, Fabric is the ideal version.
+
+Fabric can be downloaded here: https://fabricmc.net/use/installer/
+
+## Paper
+
+Paper (formerly known as PaperSpigot, distributed via the Paperclip patch utility) is a high performance fork of Spigot. The goal of Paper is to basically make everything configurable. Paper adds over 200 patches to Spigot and its API which because of this is known to cause some incompatibilities with certain plugins.
+
+You can download Paper here: https://papermc.io/downloads
+
+## Glowstone
+
+Glowstone is another high performance software which prides itself on being an original project. Glowstone does not use ***any*** of Mojang's Minecraft code. It does still have the ability however, to run Bukkit plugins. Since Glowstone doesn't use any of the original Minecraft code, it is known to have some incompatibilities with plugins.
+
+Glowstone can be found at https://www.glowstone.net/
