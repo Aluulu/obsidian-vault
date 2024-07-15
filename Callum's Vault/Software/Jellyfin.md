@@ -162,3 +162,9 @@ server {
 }
 
 ```
+
+# Jellyfin collections
+
+Jellyfin automatically creates collections when two movies are found. To populate the photos and the thumbnails of these items, make sure to enable `TMDb Box Sets` plugin.
+
+You can get it under `Administration Dashboard` > `Plugins` > `Catalogue` > `TMDb Box Sets`
