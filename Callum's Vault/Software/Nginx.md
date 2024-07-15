@@ -57,35 +57,17 @@ Please refer to the Docker installation section to see how to install Docker: [[
 
 ### 2. Create Docker compose file
 
-Create a file called `docker-compose.yml` and paste the following into it, editing as required:
+Create a file called `docker-compose.yaml` and paste the following into it, editing as required:
 
-```yml
-version: '3.8'
+```yaml
 services:
-  app:
-    image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginx
-    restart: unless-stopped
-    ports:
-      # These ports are in format <host-port>:<container-port>
-      - '80:80' # Public HTTP Port
-      - '443:443' # Public HTTPS Port
-      - '81:81' # Admin Web Port
-      # Add any other Stream port you want to expose
-      # - '21:21' # FTP
-
-    # Uncomment the next line if you uncomment anything in the section
-    # environment:
-      # Uncomment this if you want to change the location of
-      # the SQLite DB file within the container
-      # DB_SQLITE_FILE: "/data/database.sqlite"
-
-      # Uncomment this if IPv6 is not enabled on your host
-      # DISABLE_IPV6: 'true'
-
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+    client:
+        image: nginx
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - /var/www/:/var/www/
 ```
 
 ### 3. Run Docker compose
@@ -212,6 +194,9 @@ sudo nano /etc/nginx/sites-available/sub.domain_name.co.uk
 
 Inside the file, paste the following and make sure to replace `sub.domain_name.co.uk` with your own subdomain:
 
+>[!Important]
+> You do not need to paste the following if you are not using the sub domain as a webhost
+
 ```Text
 server {
         listen 80;
@@ -233,15 +218,18 @@ server {
 Enable the site and make it live by creating a symbolic link in `/etc/nginx/sites-enabled`:
 
 ```Shell
-sudo ln -s /etc/nginx/sites-available/sub.domain_name.net /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/sub.domain_name.co.uk /etc/nginx/sites-enabled/
 ```
 
-## Create a config file
+## Create a config file (Redirect traffic to a different host)
+
+>[!Important]
+> If you are using the subdomain as a redirect, follow these steps. Otherwise ignore them.
 
 Now create a `conf` file so that you can tell Nginx what to do with the request. Use the subdomain name as the name of the file to make it easier to track.
 
 ```Shell
-sudo nano /etc/nginx.conf.d/subdomain.conf
+sudo nano /etc/nginx/conf.d/subdomain.conf
 ```
 
 Inside that file, paste the following:
@@ -251,10 +239,7 @@ server {
         listen 80;
         listen [::]:80;
 
-		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk
-
-        root /var/www/your_domain/html;
-        index index.html index.htm index.nginx-debian.html;
+		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
 
         location / {
                 try_files $uri $uri/ =404;
@@ -264,11 +249,11 @@ server {
 
 ### Passing the request to the correct server
 
-Now that you have enabled the site, you can tell Nginx where to forward the requests it gets for your certain subdomain. Inside the same file, paste the following inside the `server` block:
+Now that you have enabled the site, you can tell Nginx where to forward the requests it gets for your certain subdomain. **Inside the same file**, paste the following inside the `server` block:
 
 ```conf
 location / {
-        # Proxy main Minecraft traffic
+        # Proxy main traffic
         proxy_pass http://IP.GOES.HERE:PORT;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -276,13 +261,11 @@ location / {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Forwarded-Protocol $scheme;
         proxy_set_header X-Forwarded-Host $http_host;
-
-        # Disable buffering when the nginx proxy gets very resource heavy upon streaming
-        proxy_buffering off;
     }
 ```
 
-Be sure to change the IP address and port number.
+> [!Warning]
+> Be sure to change the IP address and port number.
 
 ## Check syntax errors
 
@@ -319,20 +302,23 @@ sudo certbot certonly --agree-tos --email myemail@email.com -d sub.domain_name.c
 
 A message will appear asking how you would like to authenticate. Select the option with `Nginx Web Server plugin (nginx)`
 
-
 ## Edit your server blocks
 
+### HTML page
+
 With Certbot now active, edit your Server blocks in the `/etc/nginx/sites-available` directory to enable SSL.
+
+If using a `site-enabled`, use the following:
 
 ```
 server {
 	listen 80;
 	listen [::]:80;
 
-	root /var/www/domain_name.co.uk/html;
+	root /var/www/sub.domain_name.co.uk/html;
 	index index.html index.htm index.nginx-debian.html;
 
-	server_name domain_name.co.uk www.domain_name.co.uk;
+	server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
 
 	# location / {
 		# try_files $uri $uri/ =404;
@@ -344,15 +330,15 @@ server {
     listen 443 ssl;
 	listen [::]:443;
 	# Root directory used to search for a file        
-	root /var/www/domain_name.co.uk/html; 
+	root /var/www/sub.domain_name.co.uk/html; 
 	# Defines the domain or subdomain name. 
     # If no server_name is defined in a server block then 
 	# Nginx uses the 'empty' name
     server_name domain_name.co.uk www.domain_name.co.uk;
 
 	# Path of the SSL certificate
-    ssl_certificate /etc/letsencrypt/live/domain_name.co.uk/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/domain_name.co.uk/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/sub/domain_name.co.uk/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sub.domain_name.co.uk/privkey.pem;
 	# Use the file generated by certbot command.
     include /etc/letsencrypt/options-ssl-nginx.conf;
 	# Define the path of the dhparam.pem file.
@@ -367,6 +353,48 @@ server {
 }
 ```
 
+### Redirecting traffic
+
+If using `.conf`, edit the following in `/etc/nginx/conf.d`:
+
+> [!Tip]
+> Note that now you can redirect the HTTP requests straight to HTTPS
+
+```conf
+server {
+		# Redirect to HTTPS
+        listen 80;
+        listen [::]:80;
+        server_name sub.domain.co.uk www.sub.domain.co.uk;
+        return 301 https://sub.domain.co.uk;
+}
+
+server {
+        listen 443 ssl;
+        listen [::]:443;
+
+        server_name sub.domain.co.uk www.sub.domain.co.uk;
+
+        # Path of the SSL certificate
+        ssl_certificate /etc/letsencrypt/live/sonarr.callumwellard.co.uk/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/sonarr.callumwellard.co.uk/privkey.pem;
+        # Use the file generated by certbot command.
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        # Define the path of the dhparam.pem file.
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        location / {
+                # Proxy main traffic
+                proxy_pass http://192.168.0.68:8989;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Protocol $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
+        }
+}
+```
 ## Restart the Nginx service
 
 Restart the service by entering the following command. This should be ran anytime ***Nginx*** change has been made:
