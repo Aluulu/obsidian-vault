@@ -13,7 +13,7 @@ services:
       - UMASK=002
       - TZ=Etc/UTC
     volumes:
-      - /data/radarr:/config
+      - /config/radarr:/config
       - /data:/data
     restart: unless-stopped
     network_mode: "service:gluetun"
@@ -25,9 +25,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - UMASK=002
       - TZ=Etc/UTC
     volumes:
-      - /data/sonarr:/config
+      - /config/sonarr:/config
       - /data:/data
     restart: unless-stopped
     network_mode: "service:gluetun"
@@ -39,6 +40,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - UMASK=002
       - TZ=Etc/UTC
     volumes:
       - /config/prowlarr:/config
@@ -46,17 +48,18 @@ services:
     network_mode: "service:gluetun"
 
 
-  deluge: # Remember to sign into deluge from the default web portal (8112). Default password is "deluge"
-    image: lscr.io/linuxserver/deluge:latest
-    container_name: deluge
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
-      - DELUGE_LOGLEVEL=error #optional
+      - TZ=Europe/London
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
     volumes:
-      - /data/deluge:/config
-      - /data/torrents:/data/torrents
+      - /config:/config
+      - /data/downloads:/data/downloads
     restart: unless-stopped
     network_mode: "service:gluetun"
     depends_on:
@@ -72,13 +75,13 @@ services:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard
     volumes:
-      - /wireguard/wg0.conf:/gluetun/wireguard/wg0.conf
+      - /wireguard:/gluetun/wireguard # Have a file called wg0.conf in this directory
     ports:
-    ##### DELUGE
-      - 8112:8112 # Default web portal
-      - 6881:6881
-      - 6881:6881/udp
-      - 58846:58846 #optional
+    ######## qbittorrent
+      - 8080:8080 # WebUI
+      - 6881:6881 # tcp connection port
+    ########
+
     ######## Radarr
       - 7878:7878
     ########
@@ -90,20 +93,43 @@ services:
     ######## sonarr
       - 8989:8989
     ########
+
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - "9443:9443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/config/portainer:/config/portainer"
+    restart: always
+
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Asia/Tashkent
+      - PORT=5055 #optional
+    ports:
+      - 5055:5055
+    volumes:
+      - /path/to/appdata/config:/app/config
+    restart: unless-stopped
 ```
 
-## Sign into Deluge web portal
+## Sign into Qbittorrent web portal
 
-Go to the webportal for Deluge. In my case it's port 8112, so:
-`192.168.0.68:8112`
+Go to the webportal for Qbittorrent. In my case it's port 8080, so:
+`192.168.0.68:8080`
 
-The default password for the web portal is `deluge`.
+The default password for the web portal is shown in the docker logs. You can see it when attached or you can use a application like portainer to easily view logs for each container.
 
-Once in. go to Preferences > Plugins > enable Label.
-
-In Downloads, change `Download to:` into the following:
-
-`/data/torrents`
+Once in, go to your settings by clicking the cog icon in the top bar. Then in the `Downloads` section menu, change your Default Save Path to where your root folder is. In this case it's:
+`/data/downloads`
 
 ## Set up your gluetun VPN
 
@@ -122,32 +148,24 @@ Set up a torrent list by going to `Indexers` > `Add Indexer`.
 
 Add your favourite websites, test them, and save them.
 
+### Linking Prowlarr to your other apps
+
+In your other apps like Radarr, go to `Settings` > `General` > `Copy API Key`.
+Once you have the key copied, go to Prowlarr and head to `Settings` > `Apps` > `Add` > `Paste in your API key`.
+
 ## Create the file structure
 
 You will need to create a file structure like the one down below. You can do so with the following command:
 
 ```Bash
-mkdir -p data/torrents/{books,movies,music,tv} data/usenet/{incomplete,complete/{books,movies,music,tv}} data/media/{books,movies,music,tv}
+mkdir -p data/downloads data/media/{books,movies,music,tv}
 ```
 
 ```
 data
-├── torrents
-│   ├── books
-│   ├── movies
-│   ├── music
-│   └── tv
-├── usenet
-│   ├── incomplete
-│   └── complete
-│       ├── books
-│       ├── movies
-│       ├── music
-│       └── tv
+├── downloads
 └── media
-    ├── books
     ├── movies
-    ├── music
     └── tv
 ```
 
