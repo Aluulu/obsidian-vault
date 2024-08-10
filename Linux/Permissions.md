@@ -139,7 +139,7 @@ sudo chown -R root /etc/nginx
 To change the group owner of the file, use the following command
 
 ```Shell
-sudo chown -R [:group] [/file/path]
+sudo chown [:group] [/file/path]
 ```
 
 For example to make a group called `nginx-user` own `/etc/nginx`, you can use the following:
