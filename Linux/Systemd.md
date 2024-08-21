@@ -172,3 +172,10 @@ For example, you can make CUPS a dependency for the default graphical target by 
 ```Shell
 systemctl add-wants graphical.target cups.service
 ```
+
+# Changing Linux kernel parameters
+
+To change the Linux kernel parameters using systemd, you must edit the following file:
+`/boot/loader/entries/<file>.conf`
+
+From there, the line starting with `options` will hold your kernel parameters. You can edit it to permanently change your kernel parameters.
