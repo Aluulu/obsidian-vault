@@ -198,7 +198,9 @@ server {
         listen [::]:80;
 
 		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
+
         index index.html index.htm index.nginx-debian.html;
+        # (Optional - for serving nginx static webpages)
 
         location / {
 		    proxy_pass http://IP.GOES.HERE:PORT;
@@ -209,7 +211,7 @@ server {
 
 			root /var/www/domain.co.uk/html;
 			try_files $uri $uri/ =404;
-			# (Optional - for serving static webpages)
+			# (Optional - for serving nginx static webpages)
 		}
 }
 ```
@@ -314,6 +316,9 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+	index index.html index.htm index.nginx-debian.html;
+	# (Optional - for serving nginx static webpages)
+
     location / {
         proxy_pass http://IP.GOES.HERE:PORT;
         proxy_set_header Host $host;
@@ -328,7 +333,7 @@ server {
 
 		root /var/www/domain.co.uk/html;
 		try_files $uri $uri/ =404;
-		# (Optional - for serving static webpages)
+		# (Optional - for serving nginx static webpages)
     }
 }
 ```
