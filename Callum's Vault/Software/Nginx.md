@@ -148,14 +148,13 @@ sudo nginx -t
 
 # Setting up a subdomain
 
-## Create folders for the subdomains
+## Create folders for the subdomains (website hosting)
 
 Create your folders in the same location that hosts your main domain `/var/www/sub.domain_name.co.uk`
 
 For example, it should look like this:
 
 - /var/www/callumwellard.co.uk - main domain of callumwellard.co.uk
-- /var/www/jellyfin.callumwellard.co.uk - Subdomain for Jellyfin
 - /var/www/webapp.callumwellard.co.uk - Subdomain for a webapp
 
 ## Correct ownership of the subdomains
@@ -169,7 +168,6 @@ sudo chown -R www-data:www-data /var/www/sub.domain_name.co.uk
 With the example above, it should look like so:
 
 ```Shell
-sudo chown -R www-data:www-data /var/www/jellyfin.callumwellard.co.uk
 sudo chown -R www-data:www-data /var/www/webapp.callumwellard.co.uk
 ```
 
@@ -182,26 +180,6 @@ sudo nano /etc/nginx/sites-available/sub.domain_name.co.uk
 ```
 
 Inside the file, paste the following and make sure to replace `sub.domain_name.co.uk` with your own subdomain:
-
->[!Important]
-> You do not need to paste the following if you are not using the sub domain as a webhost
-
-```Text
-server {
-        listen 80;
-        listen [::]:80;
-
-        root /var/www/sub.domain_name.co.uk/html;
-        index index.html index.htm index.nginx-debian.html;
-
-        server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-}
-```
-
 ## Enable the domain
 
 Enable the site and make it live by creating a symbolic link in `/etc/nginx/sites-enabled`:
@@ -210,18 +188,9 @@ Enable the site and make it live by creating a symbolic link in `/etc/nginx/site
 sudo ln -s /etc/nginx/sites-available/sub.domain_name.co.uk /etc/nginx/sites-enabled/
 ```
 
-## Create a config file (Redirect traffic to a different host)
+## Editing domain configuration files
 
->[!Important]
-> If you are using the subdomain as a redirect, follow these steps. Otherwise ignore them.
-
-Now create a `conf` file so that you can tell Nginx what to do with the request. Use the subdomain name as the name of the file to make it easier to track.
-
-```Shell
-sudo nano /etc/nginx/conf.d/subdomain.conf
-```
-
-Inside that file, paste the following:
+Inside the `sites-available` file, paste the following:
 
 ```conf
 server {
@@ -229,36 +198,64 @@ server {
         listen [::]:80;
 
 		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
+        index index.html index.htm index.nginx-debian.html;
 
         location / {
-                try_files $uri $uri/ =404;
-        }
+		    proxy_pass http://IP.GOES.HERE:PORT;
+		    proxy_set_header Host $host;
+		    proxy_set_header X-Real-IP $remote_addr;
+		    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		    proxy_set_header X-Forwarded-Proto $scheme;
+
+			root /var/www/domain.co.uk/html;
+			try_files $uri $uri/ =404;
+			# (Optional - for serving static webpages)
+		}
 }
 ```
 
-### Passing the request to the correct server
-
-Now that you have enabled the site, you can tell Nginx where to forward the requests it gets for your certain subdomain. **Inside the same file**, paste the following inside the `server` block:
-
-```conf
-location / {
-        # Proxy main traffic
-        proxy_pass http://IP.GOES.HERE:PORT;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Protocol $scheme;
-        proxy_set_header X-Forwarded-Host $http_host;
-    }
-```
-
 > [!Warning]
-> Be sure to change the IP address and port number.
+> Be sure to change the IP address, port number, and the domain names.
 
+For an explanation of the above, please click the collapsible section below:
+
+> [!NOTE]- Nginx configuration explained:
+> **listen 80;**
+> **listen [::]:80;**
+> What ports this domain should listen on
+> 
+> **server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;**
+> Specifies the domain names (or hostnames) that Nginx will respond to.
+> 
+> **index index.html index.htm index.nginx-debian.html;**
+> Specifies the order in which Nginx should look for index files when a client requests this domain. (Optional - for serving static webpages)
+> 
+> **proxy_pass http://IP.GOES.HERE:PORT;**
+> This specifies the destination for the proxy. Nginx will forward all incoming requests to the specified IP address and port.
+> 
+> **proxy_set_header Host $host;**
+> This sets the Host header in the proxied request to be the same as the original Host header from the client’s request ($host refers to the domain or IP address the client requested).
+> 
+> **proxy_set_header X-Real-IP $remote_addr;**
+> This sets the X-Real-IP header to the client’s original IP address ($remote_addr), so the backend server knows the true client IP, not the IP of the Nginx server.
+> 
+> **proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;**
+> This appends the client’s IP address to the X-Forwarded-For header. The X-Forwarded-For header is commonly used to track the chain of proxy servers through which the request has passed. Nginx adds the client IP (or the last proxy’s IP) to this header.
+> 
+> **proxy_set_header X-Forwarded-Proto $scheme;**
+> This sets the X-Forwarded-Proto header to indicate the protocol (HTTP or HTTPS) used in the original client request. $scheme is a variable in Nginx that automatically resolves to either http or https based on the connection.
+> 
+> **root /var/www/domain.co.uk/html;**
+> This sets the directory where your static web pages will be located.
+> 
+> **try_files $uri $uri/ =404;**
+> This configuration is often used for static websites or content that is directly served from the file system. It tells Nginx to:
+> 1) Try to serve the exact file matching the URL.
+> 2) If no file is found, check if the URL matches a directory and try to serve an index file (like index.html).
+> 3) If neither a file nor a directory exists, return a 404 error.
 ## Check syntax errors
 
-After restarting the service and Nginx has successfully applied the changes, check that the config files have successfully applied and have no errors by using the following command:
+After editing the file, check that the config files has no errors by using the following command:
 
 ```Shell
 sudo nginx -t
@@ -266,12 +263,13 @@ sudo nginx -t
 
 ## Restart the Nginx service
 
-Restart the service by entering the following command. This should be ran anytime ***Nginx*** change has been made:
+Restart the service by entering the following command. This should be ran ***anytime Nginx*** change has been made:
 
 ```Shell
 sudo systemctl restart nginx
 ```
 
+Your domain should now be publicly accessible via a reverse proxy.
 # Setting up HTTPS with LetsEncrypt/Certbot
 
 ## Installing Certbot and the Nginx package
@@ -294,63 +292,7 @@ A message will appear asking how you would like to authenticate. Select the opti
 > [!Warning]
 > If you do not see the option for Nginx Web Server Plugin, then you didn't install the package above.
 > Please run this command: `sudo apt-get install certbot python3-certbot-nginx -y`
-## Edit your server blocks
-
-### HTML page
-
-With Certbot now active, edit your Server blocks in the `/etc/nginx/sites-available` directory to enable SSL.
-
-If using a `site-enabled`, use the following:
-
-```
-server {
-	listen 80;
-	listen [::]:80;
-
-	root /var/www/sub.domain_name.co.uk/html;
-	index index.html index.htm index.nginx-debian.html;
-
-	server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
-
-	# location / {
-		# try_files $uri $uri/ =404;
-	# }
-}
-
-server {
-	# Binds the TCP port 443 and enable SSL.
-    listen 443 ssl;
-	listen [::]:443;
-	# Root directory used to search for a file        
-	root /var/www/sub.domain_name.co.uk/html; 
-	# Defines the domain or subdomain name. 
-    # If no server_name is defined in a server block then 
-	# Nginx uses the 'empty' name
-    server_name domain_name.co.uk www.domain_name.co.uk;
-
-	# Path of the SSL certificate
-    ssl_certificate /etc/letsencrypt/live/sub/domain_name.co.uk/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/sub.domain_name.co.uk/privkey.pem;
-	# Use the file generated by certbot command.
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-	# Define the path of the dhparam.pem file.
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
-	location / {
-		# Return a 404 error for instances when the server receives 
-	    # requests for untraceable files and directories.
-        try_files $uri $uri/ =404;
-	}
-
-}
-```
-
-### Redirecting traffic
-
-If using `.conf`, edit the following in `/etc/nginx/conf.d`:
-
-> [!Tip]
-> Note that now you can redirect the HTTP requests straight to HTTPS
+## Reedit your server blocks to enable SSL
 
 ```conf
 server {
@@ -358,6 +300,7 @@ server {
     listen [::]:80;
     server_name sub.domain.co.uk www.sub.domain.co.uk;
     return 301 https://sub.domain.co.uk$request_uri;
+    # Returns all HTTP requests and requests it as HTTPS instead
 }
 
 server {
@@ -372,7 +315,7 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     location / {
-        proxy_pass http://192.168.0.X:XXXX;
+        proxy_pass http://IP.GOES.HERE:PORT;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -382,13 +325,24 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+
+		root /var/www/domain.co.uk/html;
+		try_files $uri $uri/ =404;
+		# (Optional - for serving static webpages)
     }
 }
+```
 
+## Check syntax errors
+
+After editing the domain to enable SSL, check that the config file has no errors by using the following command:
+
+```Shell
+sudo nginx -t
 ```
 ## Restart the Nginx service
 
-Restart the service by entering the following command. This should be ran anytime ***Nginx*** change has been made:
+If there are no errors, restart the service by entering the following command. This should be ran ***anytime Nginx*** change has been made:
 
 ```Shell
 sudo systemctl restart nginx
