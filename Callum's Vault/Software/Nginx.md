@@ -157,7 +157,7 @@ For example, it should look like this:
 - /var/www/callumwellard.co.uk - main domain of callumwellard.co.uk
 - /var/www/webapp.callumwellard.co.uk - Subdomain for a webapp
 
-## Correct ownership of the subdomains
+### Correct ownership of the subdomains
 
 Ensure that Nginx can access these folders by changing ownership of the folders to `www-data`; the account used by Nginx.
 
