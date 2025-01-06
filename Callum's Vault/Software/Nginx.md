@@ -7,7 +7,7 @@ Nginx is a web server, reverse proxy, content cache, load balancer, TCP/UDP prox
 There are 4 main components to Nginx, these are:
 - Available sites - This is the sites that are ready to be accessed. It is stored at `/etc/nginx/sites-available/`.
 - Enabled sites - This is a list of sites that are enabled and publicly available to access. It is stored in `/etc/nginx/sites-enabled/`.
-- Site configuration files - This is where the config files for each site is stored. Each site is given its own `.conf` file. These files allow you to direct traffic based on its request. It is stored in `/etc/nginx/conf.d/`.
+- Site configuration files - This is where global config files are stored so you do not need include configurations individually for each site. It is stored in `/etc/nginx/conf.d/`.
 - Webpages - This is where any local webpages are stored and are accessed by Nginx. On Debian distributions like Ubuntu, it is typically stored in `/var/www/your-domains-here.co.uk`.
 
 Nginx creates a user when it is installed called `www-data` or `nginx`. It uses these accounts to access the 4 components above so ensure that it has access to these paths if you are having issues.
