@@ -2,6 +2,9 @@
 
 Nginx is a web server, reverse proxy, content cache, load balancer, TCP/UDP proxy server, and mail proxy server.
 
+> [!NOTE]  
+> This page assumes you have a domain name already registered and the ports open required to access your network from an external network.
+
 ## Quick important points
 
 There are 4 main components to Nginx, these are:
@@ -197,7 +200,7 @@ server {
         listen 80;
         listen [::]:80;
 
-		server_name sub.domain_name.co.uk www.sub.domain_name.co.uk;
+		server_name sub.domain_name.co.uk;
 
         index index.html index.htm index.nginx-debian.html;
         # (Optional - for serving nginx static webpages)
@@ -370,10 +373,94 @@ for FILE in "$NGINX_CONF_DIR"/*; do
 
   # Run the Certbot command for the domain
   echo "Running certbot for domain: $DOMAIN"
-  sudo certbot certonly --agree-tos --email "$EMAIL" -d "$DOMAIN"
+  sudo certbot certonly --agree-tos --email "$EMAIL" -d "$DOMAIN" --nginx --force-renewal
 done
 ```
 
+# Setting up country blocking
+
+To set up nginx to block specific countries, or to allow for a whitelist of accepted countries, you can do so the following way:
+
+## Install the GeoIP nginx addon
+
+This can be done by running the following script:
+
+```bash
+sudo apt install libnginx-mod-http-geoip
+```
+
+## Edit nginx.conf
+
+Once done, you need edit `nginx.conf` located in `/etc/nginx/nginx.conf`. You will need to add the following into your `http` server block:
+
+```conf
+# Load GeoIP country database
+geoip_country /usr/share/GeoIP/GeoIP.dat;
+
+# Map country codes to allow/deny access
+map $geoip_country_code $allowed_country {
+	default 0; # Block all by default
+	GB 1;      # Allow UK
+}
+```
+
+If you need a list of countries and their codes, please visit the following link:
+https://www.geonames.org/countries/
+## Edit server blocks
+
+With GeoIP now set up to block all traffic from all but one country, we can set it so our server blocks to block all traffic if it is not from our specified country.
+This is done by adding the following section to the `location /` field:
+
+```conf
+if ($allowed_country = 0) {
+	return 403;
+}
+```
+
+A working example of this is below:
+
+```conf
+server {
+    listen 80;
+    listen [::]:80;
+    server_name nextcloud.callumwellard.co.uk;
+    return 301 https://nextcloud.callumwellard.co.uk$request_uri;
+    # Returns all HTTP requests and requests it as HTTPS instead
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name nextcloud.callumwellard.co.uk;
+    
+    client_max_body_size 0;
+
+    ssl_certificate /etc/letsencrypt/live/nextcloud.callumwellard.co.uk/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/nextcloud.callumwellard.co.uk/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+
+		# We added this part here!
+		if ($allowed_country = 0) {
+            return 403;
+        }
+        
+        proxy_pass http://192.168.0.115:2000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # For WebSocket support, if needed
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
 # Common troubleshooting
 
 ## Finding log file
@@ -382,7 +469,16 @@ The log file for Nginx is located in:
 `/var/log/nginx/error.log`
 
 You can use `cat` to show the output like so:
-`sudo cat /var/log/nginx/error.log`
+
+```Bash
+sudo cat /var/log/nginx/error.log
+```
+
+To get a real time log of the output, use `tail`:
+
+```bash
+sudo tail -f /var/log/nginx/access.log
+```
 
 ## File permissions
 
