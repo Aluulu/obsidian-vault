@@ -1,12 +1,18 @@
+# Jellyfin
+
+Jellyfin is a free, open-source media server that lets you organize, manage, and stream your personal media collection. It supports movies, TV shows, music, and more, with no subscriptions or hidden costs. Accessible from multiple devices, Jellyfin gives you full control over your media.
+
 # Installation
 
-## 1. Install Docker
+## Docker
+
+### 1. Install Docker
 
 Please refer to the Docker installation section to see how to install Docker: [[Docker#Installation]]
 
-## 2. Create a directory for the files
+### 2. Create a directory for the files
 
-Create 3 directories for your Jellyfin server, these are `config`, `cache`, and `media`.
+With Docker installed, create 3 directories for your Jellyfin server, these are `config`, `cache`, and `media`.
 
 ```Shell
 mkdir /path/to/jellyfin-config
@@ -14,7 +20,13 @@ mkdir /path/to/jellyfin-cache
 mkdir /path/to/jellyfin-media
 ```
 
-## 3. Docker compose file
+Config is where Jellyfin stores its main configuration settings as well as where it will store data related to Jellyfin.
+
+Cache is exactly as it sounds and is where Jellyfin will store temporary files, such as images and metadata.
+
+Media is where your movies and series will be stored in.
+
+### 3. Docker compose file
 
 Create a file called `docker-compose.yml` and paste the following into it, editing as required:
 
@@ -38,7 +50,7 @@ services:
       - "host.docker.internal:host-gateway"
 ```
 
-## 4. Run Docker compose
+### 4. Run Docker compose
 
 ```Shell
 docker compose up -d
@@ -46,10 +58,12 @@ docker compose up -d
 
 # Running Jellyfin under a reverse proxy
 
+## Nginx
+
 This page assumes that you have followed the guide for setting up a subdomain under [[Nginx]]. If you haven't done that, follow that guide here:
 [[Nginx#Setting up a subdomain]]
 
-## Nginx conf fike
+### Nginx conf file
 
 After setting up Nginx to correctly enable subdomains, you can enable Jellyfin to run as an app by creating and pasting the following into the following file `/etc/nginx/conf.d/jellyfin.conf`:
 
